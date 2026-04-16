@@ -26,7 +26,8 @@ canvas {
     display: block;
 }
 
-#ui-layer {
+/* Telas sobrepostas gerais */
+.overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -41,37 +42,59 @@ canvas {
     z-index: 10;
 }
 
-#ui-layer.hidden {
+.overlay.hidden {
     display: none;
 }
 
-h1 {
-    font-size: 4rem;
+.glow-title {
+    font-size: 5rem;
     margin-bottom: 0.5rem;
     text-transform: uppercase;
-    text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+    text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff;
     color: #fff;
-    letter-spacing: 3px;
+    letter-spacing: 5px;
+}
+
+.text-pause {
+    text-shadow: 0 0 10px #0055ff, 0 0 20px #0055ff, 0 0 40px #0055ff;
 }
 
 #message-title.win {
-    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 40px #00ff00;
 }
 
 #message-title.game-over {
-    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 40px #ff0000;
 }
 
 p {
     font-size: 1.8rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     color: #00ffff;
     text-shadow: 0 0 5px #00ffff;
     font-weight: bold;
 }
 
+.controls-info {
+    margin-bottom: 2.5rem;
+    font-size: 1.1rem;
+    color: #ccc;
+    line-height: 2;
+    text-shadow: 0 0 3px #000;
+}
+
+.controls-info span {
+    background-color: #333;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid #666;
+    color: #00ffff;
+    font-weight: bold;
+    box-shadow: 0 0 5px #00ffff;
+}
+
 button {
-    padding: 15px 35px;
+    padding: 15px 40px;
     font-size: 1.5rem;
     font-weight: bold;
     font-family: 'Courier New', Courier, monospace;
@@ -90,4 +113,8 @@ button:hover {
     color: #000;
     box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
     transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
 }

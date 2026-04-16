@@ -1,15 +1,21 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+const startScreen = document.getElementById("start-screen");
 const uiLayer = document.getElementById("ui-layer");
+const pauseScreen = document.getElementById("pause-screen");
+
 const messageTitle = document.getElementById("message-title");
 const messageSubtitle = document.getElementById("message-subtitle");
+
+const startBtn = document.getElementById("start-btn");
 const restartBtn = document.getElementById("restart-btn");
+const resumeBtn = document.getElementById("resume-btn");
 
 // Status do Jogo
 let score = 0;
 let lives = 3;
-let gameState = "PLAYING"; 
+let gameState = "START"; // START, PLAYING, PAUSED, GAME_OVER, WIN
 let animationId;
 
 // Raquete (Paddle)
@@ -63,32 +69,37 @@ function initBricks() {
 // Controladores de Evento
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
-document.addEventListener("mousemove", mouseMoveHandler, false);
-restartBtn.addEventListener("click", resetGame);
+
+startBtn.addEventListener("click", startGame);
+restartBtn.addEventListener("click", restartGame);
+resumeBtn.addEventListener("click", togglePause);
 
 function keyDownHandler(e) {
-    if (e.key === "Right" || e.key === "ArrowRight") {
+    if (e.key === "Right" || e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
         rightPressed = true;
-    } else if (e.key === "Left" || e.key === "ArrowLeft") {
+    } else if (e.key === "Left" || e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
         leftPressed = true;
+    } else if (e.key === "p" || e.key === "P" || e.key === "Escape") {
+        togglePause();
     }
 }
 
 function keyUpHandler(e) {
-    if (e.key === "Right" || e.key === "ArrowRight") {
+    if (e.key === "Right" || e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
         rightPressed = false;
-    } else if (e.key === "Left" || e.key === "ArrowLeft") {
+    } else if (e.key === "Left" || e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
         leftPressed = false;
     }
 }
 
-function mouseMoveHandler(e) {
-    const rect = canvas.getBoundingClientRect();
-    const relativeX = e.clientX - rect.left;
-    if (relativeX > 0 && relativeX < canvas.width) {
-        paddleX = relativeX - paddleWidth / 2;
-        if (paddleX < 0) paddleX = 0;
-        if (paddleX + paddleWidth > canvas.width) paddleX = canvas.width - paddleWidth;
+function togglePause() {
+    if (gameState === "PLAYING") {
+        gameState = "PAUSED";
+        pauseScreen.classList.remove("hidden");
+    } else if (gameState === "PAUSED") {
+        gameState = "PLAYING";
+        pauseScreen.classList.add("hidden");
+        requestAnimationFrame(draw); // Retoma o loop de renderização do jogo
     }
 }
 
@@ -111,7 +122,7 @@ function collisionDetection() {
                     b.status = 0;
                     score += 10;
                     
-                    // Aproximação para definir qual lado foi atingido e inverter a direção correta
+                    // Aproximação para definir qual lado foi atingido
                     if (Math.abs(distanceX) > Math.abs(distanceY)) {
                         ballDX = -ballDX;
                     } else {
@@ -212,7 +223,15 @@ function resetBallAndPaddle() {
     paddleX = (canvas.width - paddleWidth) / 2;
 }
 
-function resetGame() {
+function startGame() {
+    gameState = "PLAYING";
+    startScreen.classList.add("hidden");
+    initBricks();
+    resetBallAndPaddle();
+    draw();
+}
+
+function restartGame() {
     score = 0;
     lives = 3;
     gameState = "PLAYING";
@@ -233,6 +252,14 @@ function endGame(isWin) {
         messageTitle.innerText = "GAME OVER";
         messageTitle.className = "game-over";
     }
+}
+
+function drawInitState() {
+    // Desenha o fundo estático na tela de inicialização
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBricks();
+    drawPaddle();
+    drawText();
 }
 
 function draw() {
@@ -284,7 +311,7 @@ function draw() {
         }
     }
 
-    // Movimento da raquete (Teclado)
+    // Movimento da raquete limitando nas bordas (Teclado)
     if (rightPressed && paddleX < canvas.width - paddleWidth) {
         paddleX += paddleSpeed;
     } else if (leftPressed && paddleX > 0) {
@@ -298,7 +325,7 @@ function draw() {
     animationId = requestAnimationFrame(draw);
 }
 
-// Inicia o jogo
+// Inicia no status START com os gráficos de fundo desenhados
 initBricks();
 resetBallAndPaddle();
-requestAnimationFrame(draw);
+drawInitState();

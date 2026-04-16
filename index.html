@@ -10,10 +10,30 @@
 <body>
     <div id="game-container">
         <canvas id="gameCanvas" width="800" height="600"></canvas>
-        <div id="ui-layer" class="hidden">
+        
+        <!-- Tela Inicial -->
+        <div id="start-screen" class="overlay">
+            <h1 class="glow-title">Breakout</h1>
+            <p>Destrua os blocos neon!</p>
+            <div class="controls-info">
+                Controles da Raquete:<br>
+                <span>A</span> <span>D</span> ou <span>&larr;</span> <span>&rarr;</span> para mover<br><br>
+                <span>P</span> ou <span>ESC</span> para pausar
+            </div>
+            <button id="start-btn">Play</button>
+        </div>
+
+        <!-- Tela de Fim de Jogo / Vitória -->
+        <div id="ui-layer" class="overlay hidden">
             <h1 id="message-title">Game Over</h1>
             <p id="message-subtitle">Score: 0</p>
             <button id="restart-btn">Reiniciar</button>
+        </div>
+
+        <!-- Menu de Pause -->
+        <div id="pause-screen" class="overlay hidden">
+            <h1 class="glow-title text-pause">Pausado</h1>
+            <button id="resume-btn">Continuar</button>
         </div>
     </div>
     <script src="game.js"></script>
