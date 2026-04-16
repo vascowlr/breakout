@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breakout Neon Retro</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Recriação fiel do clássico Breakout para web.">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="ui-layer" class="hidden">
+            <h1 id="message-title">Game Over</h1>
+            <p id="message-subtitle">Score: 0</p>
+            <button id="restart-btn">Reiniciar</button>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
